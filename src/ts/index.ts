@@ -10,7 +10,7 @@ start_btn.addEventListener("click", () => {
 });
 
 restart_btn.addEventListener("click", () => {
-    openMap(0);
+    openMap(1);
 });
 
 menu_btn.addEventListener("click", () => {

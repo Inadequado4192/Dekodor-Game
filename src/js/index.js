@@ -8,7 +8,7 @@ start_btn.addEventListener("click", () => {
     show("game");
 });
 restart_btn.addEventListener("click", () => {
-    game_1.openMap(0);
+    game_1.openMap(1);
 });
 menu_btn.addEventListener("click", () => {
     show("menu");
