@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "ESNext",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "strict": true,
+        "rootDir": "./src/ts",
+        "outDir": "./src/js"
+    },
+    "exclude": [
+        "pages",
+        "node_modules"
+    ]
+}

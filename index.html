@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/css/index.css">
+    <title>Dekodor Game</title>
+</head>
+<body>
+    <div id="menu">
+        <button id="start_btn">Start</button>
+    </div>
+    <div id="game" style="display: none;">
+        <div id="fps"></div>
+        <canvas id="canvas"></canvas>
+        <canvas id="mask"></canvas>
+        <div id="inSetShadow"></div>
+        <canvas id="map"></canvas>
+    </div>
+    <div id="alert" style="display: none;">
+        <h2>You win</h2>
+        <!-- You win/lose -->
+        <button id="restart_btn">Restart</button>
+        <button id="menu_btn">Menu</button>
+    </div>
+    <script src="./src/js/build.js"></script>
+</body>
+</html>

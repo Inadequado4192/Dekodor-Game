@@ -1,0 +1,12 @@
+{
+  "name": "dekodor-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "tsc && webpack",
+    "save": "npm start && git add . && git commit -m \"Game\" && git push -u origin main"
+  },
+  "author": "Vlad",
+  "license": "ISC"
+}
