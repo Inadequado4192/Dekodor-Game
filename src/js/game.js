@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.win = exports.lose = exports.conspicuous = exports.SkullCountInit = exports.SkullCount = exports.addSkullCountPick = exports.SkullCountPick = exports.currentMap = exports.currentMapSize = exports.exit = exports.openMap = void 0;
+exports.win = exports.lose = exports.conspicuous = exports.SkullCountInit = exports.SkullCount = exports.addSkullCountPick = exports.SkullCountPick = exports.currentMap = exports.currentMapSize = exports.exit = exports.shitKet = exports.openMap = void 0;
 const audio_1 = require("./audio");
 const Dekodor = require("./Dekodor");
 const Player = require("./Player");
 const global_1 = require("./global");
 const Objects = require("./objects");
 const methods_1 = require("./methods");
+const _1 = require(".");
 let musicPlayed = false;
 async function openMap(map) {
     audio_1.GameAudio["Music"].stop();
@@ -28,20 +29,22 @@ async function openMap(map) {
         if (!musicPlayed && audio_1.musicEnable)
             audio_1.GameAudio["Anxious-Humming"].play(), musicPlayed = true;
         document.onkeydown = e => {
+            e.code == "ShiftLeft" && (exports.shitKet = true);
             if (!Player.character)
                 return;
             if (global_1.DirectionKeys.includes(e.code))
-                Player.playerMove.add(methods_1.getDirection(e.code));
+                Player.move.add(methods_1.getDirection(e.code));
         };
         document.onkeyup = e => {
-            if (global_1.DirectionKeys.includes(e.code) && Player.playerMove.has(methods_1.getDirection(e.code)))
-                Player.playerMove.delete(methods_1.getDirection(e.code));
+            e.code == "ShiftLeft" && (exports.shitKet = false);
+            if (global_1.DirectionKeys.includes(e.code) && Player.move.has(methods_1.getDirection(e.code)))
+                Player.move.delete(methods_1.getDirection(e.code));
         };
-        console.log(exports.currentMapSize);
         loop();
     };
 }
 exports.openMap = openMap;
+exports.shitKet = false;
 function init() {
     Player.init();
     Dekodor.init();
@@ -49,6 +52,7 @@ function init() {
     exports.SkullCount = 1;
     exports.SkullCountInit = false;
     _stop = false;
+    exports.shitKet = false;
 }
 function exit() {
     _stop = true;
@@ -84,7 +88,7 @@ function loop() {
     let elapsed = now - then;
     if (elapsed > fpsInterval) {
         then = now - (elapsed % fpsInterval);
-        Player.PlayerMove();
+        Player.playerMove();
         Dekodor.AI();
         draw();
         !exports.SkullCountInit && (exports.SkullCountInit = true);
@@ -107,6 +111,10 @@ function draw() {
     for (let pos = 0; pos < exports.currentMap.length; pos += 4) {
         const x = pos / 4 % exports.currentMapSize[0], y = Math.floor(pos / 4 / exports.currentMapSize[0]), c = Objects.SIZE / 2;
         let needDraw = true;
+        if (Player.character) {
+            (Math.abs(Player.character.x - x) > 3 ||
+                Math.abs(Player.character.y - y) > 3) && (needDraw = false);
+        }
         ctx.save();
         ctx.translate(x * Objects.SIZE + c - camera.x, y * Objects.SIZE + c - camera.y);
         const RGBA = methods_1.getRGBA(pos);
@@ -175,78 +183,47 @@ function draw() {
             exports.conspicuous = true;
         ctx_s.restore();
     };
-    for (let y = -1; y >= -radius; y--) {
-        if (methods_1.getObject(Player.character.x, Player.character.y + y)?.name === "Wall") {
-            rect(0, y);
-            break;
+    function drawRect(d, dd1, dd2) {
+        let { x, y } = Player.character;
+        for (let _ = 1; _ <= radius; _++) {
+            let _x = d.includes("H") ? _ * dd1 : 0, _y = d.includes("V") ? _ * (dd2 ?? dd1) : 0;
+            if (methods_1.getObject(x + _x, y + _y)?.name === "Wall") {
+                rect(_x, _y);
+                break;
+            }
+            else
+                rect(_x, _y);
         }
-        else
-            rect(0, y);
     }
-    for (let x = 1; x <= radius; x++) {
-        if (methods_1.getObject(Player.character.x + x, Player.character.y)?.name === "Wall") {
-            rect(x);
-            break;
-        }
-        else
-            rect(x);
+    function isW(x, y) { return methods_1.getObject(Player.character.x + x, Player.character.y + y)?.name === "Wall"; }
+    if (_1.mode == "default") {
+        drawRect(["V"], -1);
+        drawRect(["V"], 1);
+        drawRect(["H"], -1);
+        drawRect(["H"], 1);
+        drawRect(["H", "V"], -1, -1);
+        drawRect(["H", "V"], 1, -1);
+        drawRect(["H", "V"], -1, 1);
+        drawRect(["H", "V"], 1, 1);
+        if (!isW(-1, -1))
+            rect(-1, -2), rect(-2, -1);
+        if (!isW(+1, -1))
+            rect(1, -2), rect(2, -1);
+        if (!isW(+1, +1))
+            rect(1, 2), rect(2, 1);
+        if (!isW(-1, +1))
+            rect(-1, 2), rect(-2, 1);
     }
-    for (let y = 1; y <= radius; y++) {
-        if (methods_1.getObject(Player.character.x, Player.character.y + y)?.name === "Wall") {
-            rect(0, y);
-            break;
-        }
-        else
-            rect(0, y);
+    else if (_1.mode == "SCP-173") {
+        ["U"].includes(Player.direction) && (drawRect(["V"], -1), rect(-1, 0), rect(1, 0), (!isW(-1, -1) && rect(-1, -2), !isW(1, -1) && rect(1, -2)));
+        ["D"].includes(Player.direction) && (drawRect(["V"], 1), rect(-1, 0), rect(1, 0), (!isW(-1, 1) && rect(-1, 2), !isW(1, 1) && rect(1, 2)));
+        ["L"].includes(Player.direction) && (drawRect(["H"], -1), rect(0, -1), rect(0, 1), (!isW(-1, -1) && rect(-2, -1), !isW(-1, 1) && rect(-2, 1)));
+        ["R"].includes(Player.direction) && (drawRect(["H"], 1), rect(0, -1), rect(0, 1), (!isW(1, -1) && rect(2, -1), !isW(1, 1) && rect(2, 1)));
+        ["L", "U"].includes(Player.direction) && drawRect(["H", "V"], -1, -1);
+        ["R", "U"].includes(Player.direction) && drawRect(["H", "V"], 1, -1);
+        ["L", "D"].includes(Player.direction) && drawRect(["H", "V"], -1, 1);
+        ["R", "D"].includes(Player.direction) && drawRect(["H", "V"], 1, 1);
     }
-    for (let x = -1; x >= -radius; x--) {
-        if (methods_1.getObject(Player.character.x + x, Player.character.y)?.name === "Wall") {
-            rect(x);
-            break;
-        }
-        else
-            rect(x);
-    }
-    for (let xy = -1; xy >= -radius; xy--) {
-        if (methods_1.getObject(Player.character.x + xy, Player.character.y + xy)?.name === "Wall") {
-            rect(xy, xy);
-            break;
-        }
-        else
-            rect(xy, xy);
-    }
-    for (let xy = 1; xy <= radius; xy++) {
-        if (methods_1.getObject(Player.character.x + xy, Player.character.y - xy)?.name === "Wall") {
-            rect(xy, -xy);
-            break;
-        }
-        else
-            rect(xy, -xy);
-    }
-    for (let xy = 1; xy <= radius; xy++) {
-        if (methods_1.getObject(Player.character.x + xy, Player.character.y + xy)?.name === "Wall") {
-            rect(xy, xy);
-            break;
-        }
-        else
-            rect(xy, xy);
-    }
-    for (let xy = -1; xy >= -radius; xy--) {
-        if (methods_1.getObject(Player.character.x + xy, Player.character.y - xy)?.name === "Wall") {
-            rect(xy, -xy);
-            break;
-        }
-        else
-            rect(xy, -xy);
-    }
-    if (methods_1.getObject(Player.character.x - 1, Player.character.y - 1)?.name !== "Wall")
-        rect(-1, -2), rect(-2, -1);
-    if (methods_1.getObject(Player.character.x + 1, Player.character.y - 1)?.name !== "Wall")
-        rect(1, -2), rect(2, -1);
-    if (methods_1.getObject(Player.character.x + 1, Player.character.y + 1)?.name !== "Wall")
-        rect(1, 2), rect(2, 1);
-    if (methods_1.getObject(Player.character.x - 1, Player.character.y + 1)?.name !== "Wall")
-        rect(-1, 2), rect(-2, 1);
     if (scream + 16000 / 2 < Date.now()) {
         if (!DekodorV && exports.conspicuous) {
             DekodorV = true;
@@ -272,14 +249,12 @@ function updateCamera() {
 const alertElem = document.querySelector("#alert");
 const alertH2 = document.querySelector("#alert > h2");
 function lose() {
-    console.log("lose");
     alertH2.innerHTML = "You lose";
     alertElem.style.display = "flex";
     _stop = true;
 }
 exports.lose = lose;
 function win() {
-    console.log("win");
     alertH2.innerHTML = "You win";
     alertElem.style.display = "flex";
     _stop = true;

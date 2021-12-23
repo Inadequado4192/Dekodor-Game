@@ -34,22 +34,22 @@ function moveObject(pos, direction) {
     switch (direction) {
         case "U":
             moveTo = -game_1.currentMapSize[0] * 4;
-            if (_player)
+            if (_player && !game_1.shitKet)
                 mainRGBA[2] = 255;
             break;
         case "R":
             moveTo = 4;
-            if (_player)
+            if (_player && !game_1.shitKet)
                 mainRGBA[2] = 254;
             break;
         case "L":
             moveTo = -4;
-            if (_player)
+            if (_player && !game_1.shitKet)
                 mainRGBA[2] = 253;
             break;
         case "D":
             moveTo = game_1.currentMapSize[0] * 4;
-            if (_player)
+            if (_player && !game_1.shitKet)
                 mainRGBA[2] = 252;
             break;
     }

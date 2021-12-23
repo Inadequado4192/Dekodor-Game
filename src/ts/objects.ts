@@ -1,5 +1,5 @@
 export const SPRITE_SIZE = 32;
-export const SIZE = SPRITE_SIZE * 3;
+export const SIZE = SPRITE_SIZE * 2;
 
 
 export const list: Object2D[] = [

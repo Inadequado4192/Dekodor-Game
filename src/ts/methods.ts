@@ -1,4 +1,4 @@
-import { addSkullCountPick, currentMap, currentMapSize, lose, SkullCount, win } from "./game";
+import { addSkullCountPick, currentMap, currentMapSize, lose, shitKet, SkullCount, win } from "./game";
 import * as Objects from "./objects";
 import * as Dekodor from "./Dekodor";
 import * as Player from "./Player";
@@ -34,19 +34,19 @@ export function moveObject(pos: PositionInUint8ClampedArray, direction: Directio
     switch (direction) {
         case "U":
             moveTo = -currentMapSize[0] * 4;
-            if (_player) mainRGBA[2] = 255;
+            if (_player && !shitKet) mainRGBA[2] = 255;
             break;
         case "R":
             moveTo = 4;
-            if (_player) mainRGBA[2] = 254;
+            if (_player && !shitKet) mainRGBA[2] = 254;
             break;
         case "L":
             moveTo = -4;
-            if (_player) mainRGBA[2] = 253;
+            if (_player && !shitKet) mainRGBA[2] = 253;
             break;
         case "D":
             moveTo = currentMapSize[0] * 4;
-            if (_player) mainRGBA[2] = 252;
+            if (_player && !shitKet) mainRGBA[2] = 252;
             break;
     }
     let targetRGBA = getRGBA(pos + moveTo) as RGBA;

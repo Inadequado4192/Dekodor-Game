@@ -201,8 +201,8 @@ button:disabled {
     position  : fixed;
     right     : 0;
     bottom    : 0;
-    min-width : 15vh;
-    min-height: 15vh;
+    min-width : 20vh;
+    min-height: 20vh;
 
     pointer-events: none;
 

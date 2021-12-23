@@ -4,6 +4,7 @@ import * as Player from "./Player";
 import { DirectionKeys } from "./global";
 import * as Objects from "./objects";
 import { getDirection, getObject, getRGBA, setRGBA } from "./methods";
+import { mode } from ".";
 
 let musicPlayed = false;
 export async function openMap(map: number) {
@@ -32,18 +33,20 @@ export async function openMap(map: number) {
 
 
         document.onkeydown = e => {
+            e.code == "ShiftLeft" && (shitKet = true);
             if (!Player.character) return;
 
-            if (DirectionKeys.includes(e.code as any)) Player.playerMove.add(getDirection(e.code));
+            if (DirectionKeys.includes(e.code as any)) Player.move.add(getDirection(e.code));
+
         }
         document.onkeyup = e => {
-            if (DirectionKeys.includes(e.code as any) && Player.playerMove.has(getDirection(e.code))) Player.playerMove.delete(getDirection(e.code));
+            e.code == "ShiftLeft" && (shitKet = false);
+            if (DirectionKeys.includes(e.code as any) && Player.move.has(getDirection(e.code))) Player.move.delete(getDirection(e.code));
         }
-
-        console.log(currentMapSize);
         loop();
     }
 }
+export let shitKet: boolean = false;
 
 function init() {
     Player.init();
@@ -53,6 +56,7 @@ function init() {
     SkullCount = 1;
     SkullCountInit = false;
     _stop = false;
+    shitKet = false;
 }
 
 export function exit() {
@@ -100,7 +104,7 @@ function loop() {
     if (elapsed > fpsInterval) {
         then = now - (elapsed % fpsInterval);
 
-        Player.PlayerMove();
+        Player.playerMove();
         Dekodor.AI();
         draw();
         !SkullCountInit && (SkullCountInit = true);
@@ -131,12 +135,12 @@ function draw() {
 
         let needDraw = true;
 
-        // if (Player.character) {
-        //     (
-        //         Math.abs(Player.character.x - x) > 3 ||
-        //         Math.abs(Player.character.y - y) > 3
-        //     ) && (needDraw = false);
-        // }
+        if (Player.character) {
+            (
+                Math.abs(Player.character.x - x) > 3 ||
+                Math.abs(Player.character.y - y) > 3
+            ) && (needDraw = false);
+        }
 
         ctx.save();
         ctx.translate(x * Objects.SIZE + c - camera.x, y * Objects.SIZE + c - camera.y);
@@ -219,62 +223,50 @@ function draw() {
         ctx_s.restore();
     }
 
-    for (let y = -1; y >= -radius; y--) {
-        // Top
-        if (getObject(Player.character.x, Player.character.y + y)?.name === "Wall") { rect(0, y); break; }
-        else rect(0, y);
+    function drawRect(d: ("H" | "V")[], dd1: 1 | -1, dd2?: 1 | -1) {
+        let { x, y } = Player.character as Character;
+
+        for (let _ = 1; _ <= radius; _++) {
+            let _x = d.includes("H") ? _ * dd1 : 0,
+                _y = d.includes("V") ? _ * (dd2 ?? dd1) : 0;
+
+            if (getObject(x + _x, y + _y)?.name === "Wall") { rect(_x, _y); break; }
+            else rect(_x, _y);
+        }
     }
 
-    for (let x = 1; x <= radius; x++) {
-        // Right
-        if (getObject(Player.character.x + x, Player.character.y)?.name === "Wall") { rect(x); break; }
-        else rect(x);
-    }
+    function isW(x: number, y: number) { return getObject((Player.character as Character).x + x, (Player.character as Character).y + y)?.name === "Wall"; }
 
-    for (let y = 1; y <= radius; y++) {
-        // Bottom
-        if (getObject(Player.character.x, Player.character.y + y)?.name === "Wall") { rect(0, y); break; }
-        else rect(0, y);
-    }
+    if (mode == "default") {
+        drawRect(["V"], -1); // Top //
+        drawRect(["V"], 1); // Bottom //
+        drawRect(["H"], -1); // Left //
+        drawRect(["H"], 1); // Right //
 
-    for (let x = -1; x >= -radius; x--) {
-        // Left
-        if (getObject(Player.character.x + x, Player.character.y)?.name === "Wall") { rect(x); break; }
-        else rect(x);
-    }
+        drawRect(["H", "V"], -1, -1); // Left + Top //
+        drawRect(["H", "V"], 1, -1); // Right + Top //
+        drawRect(["H", "V"], -1, 1); // Left + Bottom //
+        drawRect(["H", "V"], 1, 1); // Right + Bottom //
 
-    for (let xy = -1; xy >= -radius; xy--) {
-        // Left + Top 
-        if (getObject(Player.character.x + xy, Player.character.y + xy)?.name === "Wall") { rect(xy, xy); break; }
-        else rect(xy, xy);
-    }
+        // Left + Top / 2
+        if (!isW(-1, -1)) rect(-1, -2), rect(-2, -1);
+        // Right + Top / 2
+        if (!isW(+1, -1)) rect(1, -2), rect(2, -1);
+        // Right + Button / 2
+        if (!isW(+1, +1)) rect(1, 2), rect(2, 1);
+        // Left + Button / 2
+        if (!isW(-1, +1)) rect(-1, 2), rect(-2, 1);
+    } else if (mode == "SCP-173") {
+        ["U"].includes(Player.direction) && (drawRect(["V"], -1), rect(-1, 0), rect(1, 0), (!isW(-1, -1) && rect(-1, -2), !isW(1, -1) && rect(1, -2))); // Top //
+        ["D"].includes(Player.direction) && (drawRect(["V"], 1), rect(-1, 0), rect(1, 0), (!isW(-1, 1) && rect(-1, 2), !isW(1, 1) && rect(1, 2))); // Bottom //
+        ["L"].includes(Player.direction) && (drawRect(["H"], -1), rect(0, -1), rect(0, 1), (!isW(-1, -1) && rect(-2, -1), !isW(-1, 1) && rect(-2, 1))); // Left //
+        ["R"].includes(Player.direction) && (drawRect(["H"], 1), rect(0, -1), rect(0, 1), (!isW(1, -1) && rect(2, -1), !isW(1, 1) && rect(2, 1))); // Right //
 
-    for (let xy = 1; xy <= radius; xy++) {
-        // Right + Top 
-        if (getObject(Player.character.x + xy, Player.character.y - xy)?.name === "Wall") { rect(xy, -xy); break; }
-        else rect(xy, -xy);
+        ["L", "U"].includes(Player.direction) && drawRect(["H", "V"], -1, -1); // Left + Top //
+        ["R", "U"].includes(Player.direction) && drawRect(["H", "V"], 1, -1); // Right + Top //
+        ["L", "D"].includes(Player.direction) && drawRect(["H", "V"], -1, 1); // Left + Bottom //
+        ["R", "D"].includes(Player.direction) && drawRect(["H", "V"], 1, 1); // Right + Bottom //
     }
-
-    for (let xy = 1; xy <= radius; xy++) {
-        // Right + Button 
-        if (getObject(Player.character.x + xy, Player.character.y + xy)?.name === "Wall") { rect(xy, xy); break; }
-        else rect(xy, xy);
-    }
-    for (let xy = -1; xy >= -radius; xy--) {
-        // Left + Bottom 
-        if (getObject(Player.character.x + xy, Player.character.y - xy)?.name === "Wall") { rect(xy, -xy); break; }
-        else rect(xy, -xy);
-    }
-
-
-    // Left + Top / 2
-    if (getObject(Player.character.x - 1, Player.character.y - 1)?.name !== "Wall") rect(-1, -2), rect(-2, -1);
-    // Right + Top / 2
-    if (getObject(Player.character.x + 1, Player.character.y - 1)?.name !== "Wall") rect(1, -2), rect(2, -1);
-    // Right + Button / 2
-    if (getObject(Player.character.x + 1, Player.character.y + 1)?.name !== "Wall") rect(1, 2), rect(2, 1);
-    // Left + Button / 2
-    if (getObject(Player.character.x - 1, Player.character.y + 1)?.name !== "Wall") rect(-1, 2), rect(-2, 1);
 
     if (scream + 16000 / 2 < Date.now()) {
         if (!DekodorV && conspicuous) {
@@ -308,13 +300,11 @@ const alertElem = document.querySelector("#alert") as HTMLElement;
 const alertH2 = document.querySelector("#alert > h2") as HTMLElement;
 
 export function lose() {
-    console.log("lose");
     alertH2.innerHTML = "You lose";
     alertElem.style.display = "flex";
     _stop = true;
 }
 export function win() {
-    console.log("win");
     alertH2.innerHTML = "You win";
     alertElem.style.display = "flex";
     _stop = true;

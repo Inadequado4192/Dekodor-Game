@@ -1,32 +1,38 @@
+import { shitKet } from "./game";
 import { moveObject } from "./methods";
 
 class PlayerMoveSet<T> extends Set<T> {
     last() { return Array.from(this)[this.size - 1]; }
 }
 
-export let playerLastMove = 0;
-export let playerMove = new PlayerMoveSet<Direction>();
+export let direction: Direction = "U";
+export let lastMove = 0;
+export let move = new PlayerMoveSet<Direction>();
 export let character: Character | null = null;
 
 
-export function updatePlayerLastMove() { playerLastMove = Date.now(); }
+export function updatePlayerLastMove() { lastMove = Date.now(); }
 export function setCharacter(m: Character) { character = m; }
 
 
 
 
-export function PlayerMove() {
+export function playerMove() {
     if (!character) return;
 
-    if (playerLastMove + 250 < Date.now() && playerMove.size !== 0) {
-        character.pos = moveObject(character.pos, playerMove.last()) as number;
-        updatePlayerLastMove()
+    if (lastMove + 250 < Date.now() && move.size !== 0) {
+        let l = move.last();
+        if (!shitKet) direction = l;
+        character.pos = moveObject(character.pos, l) as number;
+
+        updatePlayerLastMove();
     }
 }
 
 
 export function init() {
-    playerLastMove = 0;
-    playerMove.clear();
+    direction = "U";
+    lastMove = 0;
+    move.clear();
     character = null;
 }

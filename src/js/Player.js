@@ -1,29 +1,35 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.init = exports.PlayerMove = exports.setCharacter = exports.updatePlayerLastMove = exports.character = exports.playerMove = exports.playerLastMove = void 0;
+exports.init = exports.playerMove = exports.setCharacter = exports.updatePlayerLastMove = exports.character = exports.move = exports.lastMove = exports.direction = void 0;
+const game_1 = require("./game");
 const methods_1 = require("./methods");
 class PlayerMoveSet extends Set {
     last() { return Array.from(this)[this.size - 1]; }
 }
-exports.playerLastMove = 0;
-exports.playerMove = new PlayerMoveSet();
+exports.direction = "U";
+exports.lastMove = 0;
+exports.move = new PlayerMoveSet();
 exports.character = null;
-function updatePlayerLastMove() { exports.playerLastMove = Date.now(); }
+function updatePlayerLastMove() { exports.lastMove = Date.now(); }
 exports.updatePlayerLastMove = updatePlayerLastMove;
 function setCharacter(m) { exports.character = m; }
 exports.setCharacter = setCharacter;
-function PlayerMove() {
+function playerMove() {
     if (!exports.character)
         return;
-    if (exports.playerLastMove + 250 < Date.now() && exports.playerMove.size !== 0) {
-        exports.character.pos = methods_1.moveObject(exports.character.pos, exports.playerMove.last());
+    if (exports.lastMove + 250 < Date.now() && exports.move.size !== 0) {
+        let l = exports.move.last();
+        if (!game_1.shitKet)
+            exports.direction = l;
+        exports.character.pos = methods_1.moveObject(exports.character.pos, l);
         updatePlayerLastMove();
     }
 }
-exports.PlayerMove = PlayerMove;
+exports.playerMove = playerMove;
 function init() {
-    exports.playerLastMove = 0;
-    exports.playerMove.clear();
+    exports.direction = "U";
+    exports.lastMove = 0;
+    exports.move.clear();
     exports.character = null;
 }
 exports.init = init;

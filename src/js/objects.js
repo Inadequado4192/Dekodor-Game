@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.list = exports.SIZE = exports.SPRITE_SIZE = void 0;
 exports.SPRITE_SIZE = 32;
-exports.SIZE = exports.SPRITE_SIZE * 3;
+exports.SIZE = exports.SPRITE_SIZE * 2;
 exports.list = [
     {
         name: "Wall",
