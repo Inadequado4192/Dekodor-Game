@@ -5,6 +5,7 @@ const game_1 = require("./game");
 const Player = require("./Player");
 const global_1 = require("./global");
 const methods_1 = require("./methods");
+const _1 = require(".");
 exports.character = null;
 exports.onSkull = true;
 function OnSkull(bool) { exports.onSkull = bool; }
@@ -41,6 +42,8 @@ function AI() {
     let { x, y } = exports.character;
     let targetMove;
     if (game_1.conspicuous) {
+        if (_1.mode == "SCP-173")
+            return;
         let tx = Player.character.x - exports.character.x, ty = Player.character.y - exports.character.y;
         const gD = (n) => n > 0 ? 1 : n == 0 ? 0 : -1;
         let pp = [];

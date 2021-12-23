@@ -103,7 +103,7 @@ export function getObject(a: number | RGBA, b?: number): Object2D | null {
     if (Array.isArray(a)) return Objects.list.find(c => c.RGBA.join(",") == a.join(",")) ?? null;
     else {
         if (!currentMapSize) return null;
-        return getObject(getRGBA(a * 4 + (b as number) * 4 * currentMapSize[1]) as RGBA);
+        return getObject(getRGBA(a * 4 + (b as number) * 4 * currentMapSize[0]) as RGBA);
     }
 }
 

@@ -111,7 +111,7 @@ function getObject(a, b) {
     else {
         if (!game_1.currentMapSize)
             return null;
-        return getObject(getRGBA(a * 4 + b * 4 * game_1.currentMapSize[1]));
+        return getObject(getRGBA(a * 4 + b * 4 * game_1.currentMapSize[0]));
     }
 }
 exports.getObject = getObject;

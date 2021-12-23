@@ -9,6 +9,7 @@ const Objects = require("./objects");
 const methods_1 = require("./methods");
 let musicPlayed = false;
 async function openMap(map) {
+    audio_1.GameAudio["Music"].stop();
     alertElem.style.display = "none";
     init();
     let img = new Image();
@@ -24,9 +25,8 @@ async function openMap(map) {
         c_map.width = img.width;
         c_map.height = img.height;
         ctx_map.imageSmoothingEnabled = false;
-        if (!musicPlayed)
+        if (!musicPlayed && audio_1.musicEnable)
             audio_1.GameAudio["Anxious-Humming"].play(), musicPlayed = true;
-        loop();
         document.onkeydown = e => {
             if (!Player.character)
                 return;
@@ -37,6 +37,8 @@ async function openMap(map) {
             if (global_1.DirectionKeys.includes(e.code) && Player.playerMove.has(methods_1.getDirection(e.code)))
                 Player.playerMove.delete(methods_1.getDirection(e.code));
         };
+        console.log(exports.currentMapSize);
+        loop();
     };
 }
 exports.openMap = openMap;
@@ -103,12 +105,8 @@ function draw() {
     ctx.clearRect(0, 0, c.width, c.height);
     let currentMapCopy = exports.currentMap.slice(0);
     for (let pos = 0; pos < exports.currentMap.length; pos += 4) {
-        const x = pos / 4 % exports.currentMapSize[0], y = Math.floor(pos / 4 / exports.currentMapSize[1]), c = Objects.SIZE / 2;
+        const x = pos / 4 % exports.currentMapSize[0], y = Math.floor(pos / 4 / exports.currentMapSize[0]), c = Objects.SIZE / 2;
         let needDraw = true;
-        if (Player.character) {
-            (Math.abs(Player.character.x - x) > 3 ||
-                Math.abs(Player.character.y - y) > 3) && (needDraw = false);
-        }
         ctx.save();
         ctx.translate(x * Objects.SIZE + c - camera.x, y * Objects.SIZE + c - camera.y);
         const RGBA = methods_1.getRGBA(pos);
@@ -141,7 +139,7 @@ function draw() {
             Dekodor.setCharacter({ pos, x, y });
         if (obj.name == "Skull") {
             if (!exports.SkullCountInit) {
-                if ((x + y) % 3 == 0)
+                if ((x + y) % 5 == 0)
                     exports.SkullCount++;
                 else
                     methods_1.setRGBA(pos, [0, 0, 0, 1]);
@@ -252,7 +250,8 @@ function draw() {
     if (scream + 16000 / 2 < Date.now()) {
         if (!DekodorV && exports.conspicuous) {
             DekodorV = true;
-            audio_1.GameAudio["Scary-Piano-Glissando"].play();
+            if (audio_1.soundEnable)
+                audio_1.GameAudio["Scary-Piano-Glissando"].play();
             scream = Date.now();
         }
         if (!exports.conspicuous)

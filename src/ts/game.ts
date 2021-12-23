@@ -1,4 +1,4 @@
-import { GameAudio } from "./audio";
+import { GameAudio, musicEnable, soundEnable } from "./audio";
 import * as Dekodor from "./Dekodor";
 import * as Player from "./Player";
 import { DirectionKeys } from "./global";
@@ -7,6 +7,7 @@ import { getDirection, getObject, getRGBA, setRGBA } from "./methods";
 
 let musicPlayed = false;
 export async function openMap(map: number) {
+    GameAudio["Music"].stop();
     alertElem.style.display = "none";
     init();
 
@@ -27,8 +28,7 @@ export async function openMap(map: number) {
         ctx_map.imageSmoothingEnabled = false;
 
 
-        if (!musicPlayed) GameAudio["Anxious-Humming"].play(), musicPlayed = true;
-        loop();
+        if (!musicPlayed && musicEnable) GameAudio["Anxious-Humming"].play(), musicPlayed = true;
 
 
         document.onkeydown = e => {
@@ -39,6 +39,9 @@ export async function openMap(map: number) {
         document.onkeyup = e => {
             if (DirectionKeys.includes(e.code as any) && Player.playerMove.has(getDirection(e.code))) Player.playerMove.delete(getDirection(e.code));
         }
+
+        console.log(currentMapSize);
+        loop();
     }
 }
 
@@ -124,16 +127,16 @@ function draw() {
     let currentMapCopy = currentMap.slice(0);
 
     for (let pos = 0; pos < currentMap.length; pos += 4) {
-        const x = pos / 4 % currentMapSize[0], y = Math.floor(pos / 4 / currentMapSize[1]), c = Objects.SIZE / 2;
+        const x = pos / 4 % currentMapSize[0], y = Math.floor(pos / 4 / currentMapSize[0]), c = Objects.SIZE / 2;
 
         let needDraw = true;
 
-        if (Player.character) {
-            (
-                Math.abs(Player.character.x - x) > 3 ||
-                Math.abs(Player.character.y - y) > 3
-            ) && (needDraw = false);
-        }
+        // if (Player.character) {
+        //     (
+        //         Math.abs(Player.character.x - x) > 3 ||
+        //         Math.abs(Player.character.y - y) > 3
+        //     ) && (needDraw = false);
+        // }
 
         ctx.save();
         ctx.translate(x * Objects.SIZE + c - camera.x, y * Objects.SIZE + c - camera.y);
@@ -167,7 +170,7 @@ function draw() {
 
         if (obj.name == "Skull") {
             if (!SkullCountInit) {
-                if ((x + y) % 3 == 0) SkullCount++;
+                if ((x + y) % 5 == 0) SkullCount++;
                 else setRGBA(pos, [0, 0, 0, 1]);
             }
             ctx.scale(.4, .4);
@@ -276,7 +279,7 @@ function draw() {
     if (scream + 16000 / 2 < Date.now()) {
         if (!DekodorV && conspicuous) {
             DekodorV = true;
-            GameAudio["Scary-Piano-Glissando"].play();
+            if (soundEnable) GameAudio["Scary-Piano-Glissando"].play();
             scream = Date.now();
         }
         if (!conspicuous) DekodorV = false;

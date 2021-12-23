@@ -10,6 +10,7 @@ body {
     margin    : 0;
     background: #262626;
     overflow  : hidden;
+    height    : 100vh;
 }
 
 button {
@@ -17,8 +18,119 @@ button {
     border    : none;
     outline   : none;
 
+    padding  : 5px;
+    border   : 2px solid #eee;
+    min-width: 200px;
+    margin   : 10px;
+
     cursor: pointer;
 }
+
+button:disabled {
+    opacity: .5;
+    cursor : default;
+}
+
+
+
+
+
+#menu {
+    display        : flex;
+    flex-direction : column;
+    justify-content: center;
+    align-items    : center;
+
+    height: 100%;
+}
+
+#menu #maps {
+    margin-top: 50px;
+}
+
+#menu #maps #mapPreview {
+    position: absolute;
+
+    transform: translateX(-50%);
+
+    min-width: 100px;
+    min-height: 100px;
+
+    image-rendering: pixelated;
+
+    pointer-events: none;
+    z-index: 2;
+}
+
+#menu #maps #mapPreview[src=""] {
+    display: none;
+}
+
+#menu #maps>h3 {
+    text-align: center;
+    margin    : 0;
+}
+
+#menu #maps>span {
+    display: inline-block;
+
+    border : 2px solid #eee;
+    padding: 5px;
+    margin : 10px;
+
+    min-width : 50px;
+    min-height: 50px;
+
+    text-align: center;
+    cursor    : pointer;
+    opacity   : .5;
+}
+
+#menu #maps>span.active,
+#menu #maps>span:hover {
+    opacity: 1;
+}
+
+
+#menu #fast_options {
+    position: absolute;
+    right   : 5px;
+    bottom  : 5px;
+
+    display       : flex;
+    flex-direction: row;
+}
+
+
+#menu #fast_options>span {
+    display: inline-block;
+
+    margin : 10px;
+    opacity: .5;
+
+    cursor: pointer;
+}
+
+#menu #fast_options>span.a,
+#menu #fast_options>span:hover {
+    opacity: 1;
+}
+
+
+
+#version {
+    position : absolute;
+    left     : 2px;
+    bottom   : 2px;
+    font-size: 12px;
+    opacity  : .5;
+}
+
+
+
+
+
+
 
 
 #game,
@@ -53,7 +165,7 @@ button {
     top     : 10px;
 
     pointer-events: none;
-    user-select: none;
+    user-select   : none;
 
     z-index: 3;
 }
@@ -86,11 +198,11 @@ button {
 }
 
 #game #map {
-    position: fixed;
-    right   : 0;
-    bottom  : 0;
-    width   : 30vh;
-    height  : 30vh;
+    position  : fixed;
+    right     : 0;
+    bottom    : 0;
+    min-width : 15vh;
+    min-height: 15vh;
 
     pointer-events: none;
 

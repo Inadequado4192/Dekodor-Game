@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,9 +8,22 @@
     <link rel="stylesheet" href="./src/css/index.css">
     <title>Dekodor Game</title>
 </head>
+
 <body>
+    <!-- DOMINISHING IDS! -->
     <div id="menu">
         <button id="start_btn">Start</button>
+        <button id="SCP-173_btn" title="Coming soon..." disabled>SCP-173</button>
+        <div id="maps">
+            <img id="mapPreview" src="" alt="Preview"></img>
+            <h3>Maps</h3>
+        </div>
+        <div id="version"></div>
+
+        <div id="fast_options">
+            <span id="music" title="Music">M</span>
+            <span id="sound" title="Sound" class="a">S</span>
+        </div>
     </div>
     <div id="game" style="display: none;">
         <div id="fps"></div>
@@ -26,4 +40,5 @@
     </div>
     <script src="./src/js/build.js"></script>
 </body>
+
 </html>

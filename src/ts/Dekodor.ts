@@ -2,6 +2,7 @@ import { conspicuous } from "./game";
 import * as Player from "./Player";
 import { Direction } from "./global";
 import { getObject, getReverseDirection, moveObject } from "./methods";
+import { mode } from ".";
 
 export let character: Character | null = null;
 
@@ -46,6 +47,7 @@ export function AI(): void {
     let targetMove: Direction | undefined;
 
     if (conspicuous) {
+        if (mode == "SCP-173") return;
         let tx = Player.character.x - character.x,
             ty = Player.character.y - character.y;
 
