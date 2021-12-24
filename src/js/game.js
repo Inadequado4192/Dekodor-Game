@@ -248,7 +248,13 @@ function updateCamera() {
 }
 const alertElem = document.querySelector("#alert");
 const alertH2 = document.querySelector("#alert > h2");
+const screamElem = document.querySelector("#scream");
+function showScream() {
+    screamElem.classList.add("a");
+    setTimeout(() => screamElem.classList.remove("a"), 500);
+}
 function lose() {
+    showScream();
     alertH2.innerHTML = "You lose";
     alertElem.style.display = "flex";
     _stop = true;

@@ -299,7 +299,15 @@ function updateCamera() {
 const alertElem = document.querySelector("#alert") as HTMLElement;
 const alertH2 = document.querySelector("#alert > h2") as HTMLElement;
 
+
+const screamElem = document.querySelector("#scream") as HTMLImageElement;
+function showScream() {
+    screamElem.classList.add("a");
+    setTimeout(() => screamElem.classList.remove("a"), 500);
+}
+
 export function lose() {
+    showScream();
     alertH2.innerHTML = "You lose";
     alertElem.style.display = "flex";
     _stop = true;

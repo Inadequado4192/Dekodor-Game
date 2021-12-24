@@ -8,7 +8,7 @@
 
 body {
     margin    : 0;
-    background: #262626;
+    background: #010101;
     overflow  : hidden;
     height    : 100vh;
 }
@@ -43,9 +43,27 @@ button:disabled {
 
     height: 100%;
 }
+#menu button {
+    z-index: 2;
+}
+
+#menu #poster {
+    position : absolute;
+    right    : 10%;
+    top      : 50%;
+    transform: translate(-50%, -50%);
+
+    transition: 3s;
+    cursor    : help;
+}
+
+#menu #poster:hover {
+    filter: contrast(5) brightness(0);
+}
 
 #menu #maps {
     margin-top: 50px;
+    z-index: 2;
 }
 
 #menu #maps #mapPreview {
@@ -53,13 +71,14 @@ button:disabled {
 
     transform: translateX(-50%);
 
-    min-width: 100px;
+    min-width : 100px;
     min-height: 100px;
 
     image-rendering: pixelated;
 
     pointer-events: none;
-    z-index: 2;
+    z-index       : 2;
+    background    : #262626;
 }
 
 #menu #maps #mapPreview[src=""] {
@@ -80,6 +99,7 @@ button:disabled {
 
     min-width : 50px;
     min-height: 50px;
+
 
     text-align: center;
     cursor    : pointer;
@@ -211,4 +231,48 @@ button:disabled {
     image-rendering: pixelated;
 
     z-index: 6;
+}
+
+
+
+
+#scream {
+    position : absolute;
+    left     : 50%;
+    top      : 50%;
+    transform: translate(-50%, -50%) scale(2, 2);
+
+    user-select   : none;
+    pointer-events: none;
+
+    animation: scream .1s linear infinite;
+
+
+    transition: 1s;
+    opacity   : 0;
+    z-index   : 10;
+}
+
+
+#scream.a {
+    opacity   : 1;
+    transition: 0s;
+}
+
+@keyframes scream {
+    0% {
+        transform: translate(-47%, -47%) scale(2, 2);
+    }
+
+    25% {
+        transform: translate(-53%, -53%) scale(2, 2);
+    }
+
+    75% {
+        transform: translate(-47%, -53%) scale(2, 2);
+    }
+
+    100% {
+        transform: translate(-47%, -47%) scale(2, 2);
+    }
 }

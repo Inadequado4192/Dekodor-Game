@@ -7,6 +7,7 @@ class _GameAudio extends Audio {
         super(src);
         this.playbackRate = op?.speed ?? 1;
         this.loop = op?.loop ?? false;
+        this.volume = op?.volume ?? 1;
     }
     play() {
         this.stop();
@@ -35,7 +36,9 @@ exports.GameAudio = {
         speed: 2
     }),
     "Anxious-Humming": new Music(`${path}/Anxious-Humming.mp3`),
-    "Music": new Music(`${path}/Music.mp3`),
+    "Music": new Music(`${path}/Music.mp3`, {
+        volume: .5
+    }),
 };
 exports.musicEnable = false;
 exports.soundEnable = false;
