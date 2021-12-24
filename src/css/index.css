@@ -51,7 +51,7 @@ button:disabled {
     position : absolute;
     right    : 10%;
     top      : 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(.8, .8);
 
     transition: 3s;
     cursor    : help;
@@ -175,7 +175,7 @@ button:disabled {
 
 #mask {
     filter    : blur(10px);
-    /* opacity: .5; */
+    opacity: .5;
 }
 
 

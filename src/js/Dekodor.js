@@ -30,6 +30,16 @@ function AI() {
     if (!exports.character || !Player.character)
         return;
     let now = Date.now();
+    let speedDelay = {
+        run: 0,
+        conspicuous: 400
+    };
+    if (_1.mode == "SCP-173") {
+        speedDelay = {
+            run: 100,
+            conspicuous: Infinity
+        };
+    }
     if (game_1.conspicuous) {
         conspicuousLocal = game_1.conspicuous;
     }
@@ -37,13 +47,11 @@ function AI() {
         conspicuousLocal = false;
         runReload = now;
     }
-    if (!exports.character || lastMove + ((runReload + 1000 < now && !game_1.conspicuous) ? 0 : 400) >= now)
+    if (!exports.character || lastMove + ((runReload + 1000 < now && !game_1.conspicuous) ? speedDelay.run : speedDelay.conspicuous) >= now)
         return;
     let { x, y } = exports.character;
     let targetMove;
     if (game_1.conspicuous) {
-        if (_1.mode == "SCP-173")
-            return;
         let tx = Player.character.x - exports.character.x, ty = Player.character.y - exports.character.y;
         const gD = (n) => n > 0 ? 1 : n == 0 ? 0 : -1;
         let pp = [];
