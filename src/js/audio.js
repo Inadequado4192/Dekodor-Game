@@ -39,6 +39,8 @@ exports.GameAudio = {
     "Music": new Music(`${path}/Music.mp3`, {
         volume: .5
     }),
+    "Scream": new Sound(`${path}/Scream.mp3`, { volume: .5 }),
+    "Scream_p1": new Sound(`${path}/Scream_p1.mp3`, { volume: .5 }),
 };
 exports.musicEnable = false;
 exports.soundEnable = false;

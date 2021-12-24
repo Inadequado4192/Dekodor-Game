@@ -302,6 +302,9 @@ const alertH2 = document.querySelector("#alert > h2") as HTMLElement;
 
 const screamElem = document.querySelector("#scream") as HTMLImageElement;
 function showScream() {
+    GameAudio.Scream.play();
+    GameAudio.Scream_p1.play();
+
     screamElem.classList.add("a");
     setTimeout(() => screamElem.classList.remove("a"), 500);
 }

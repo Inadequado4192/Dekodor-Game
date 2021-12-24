@@ -250,6 +250,8 @@ const alertElem = document.querySelector("#alert");
 const alertH2 = document.querySelector("#alert > h2");
 const screamElem = document.querySelector("#scream");
 function showScream() {
+    audio_1.GameAudio.Scream.play();
+    audio_1.GameAudio.Scream_p1.play();
     screamElem.classList.add("a");
     setTimeout(() => screamElem.classList.remove("a"), 500);
 }

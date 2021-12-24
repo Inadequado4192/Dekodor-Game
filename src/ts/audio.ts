@@ -3,7 +3,7 @@ import { frame } from ".";
 type GameAudioOp = {
     speed?: number,
     loop?: boolean,
-    volume?: number
+    volume?: number,
 }
 
 class _GameAudio extends Audio {
@@ -44,6 +44,8 @@ export const GameAudio = {
     "Music": new Music(`${path}/Music.mp3`, {
         volume: .5
     }),
+    "Scream": new Sound(`${path}/Scream.mp3`, { volume: .5 }),
+    "Scream_p1": new Sound(`${path}/Scream_p1.mp3`, { volume: .5 }),
 } as const;
 
 
