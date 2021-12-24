@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SoundDisable = exports.SoundEnable = exports.MusicDisable = exports.MusicEnable = exports.soundEnable = exports.musicEnable = exports.GameAudio = void 0;
+exports.SoundDisable = exports.SoundEnable = exports.MusicDisable = exports.MusicEnable = exports.GameAudio = void 0;
 const _1 = require(".");
 class _GameAudio extends Audio {
     constructor(src, op) {
@@ -23,6 +23,7 @@ class Music extends _GameAudio {
         super(src, op);
         this.type = "music";
         this.loop = true;
+        this.muted = true;
     }
 }
 class Sound extends _GameAudio {
@@ -44,28 +45,32 @@ exports.GameAudio = {
     "Scream": new Sound(`${path}/Scream.mp3`, { volume: .2 }),
     "Scream_p1": new Sound(`${path}/Scream_p1.mp3`, { volume: .2 }),
 };
-exports.musicEnable = false;
-exports.soundEnable = false;
 function MusicEnable() {
-    exports.musicEnable = true;
     _1.frame == "menu" && exports.GameAudio.Music.play();
+    for (let name in exports.GameAudio) {
+        let m = exports.GameAudio[name];
+        m.type == "music" && (m.muted = false);
+    }
 }
 exports.MusicEnable = MusicEnable;
 function MusicDisable() {
-    exports.musicEnable = false;
     for (let name in exports.GameAudio) {
         let m = exports.GameAudio[name];
-        m.type == "music" && m.stop();
+        m.type == "music" && (m.muted = true);
     }
 }
 exports.MusicDisable = MusicDisable;
-function SoundEnable() { exports.soundEnable = true; }
-exports.SoundEnable = SoundEnable;
-function SoundDisable() {
-    exports.soundEnable = false;
+function SoundEnable() {
     for (let name in exports.GameAudio) {
         let m = exports.GameAudio[name];
-        m.type == "sound" && m.stop();
+        m.type == "sound" && (m.muted = false);
+    }
+}
+exports.SoundEnable = SoundEnable;
+function SoundDisable() {
+    for (let name in exports.GameAudio) {
+        let m = exports.GameAudio[name];
+        m.type == "sound" && (m.muted = true);
     }
 }
 exports.SoundDisable = SoundDisable;

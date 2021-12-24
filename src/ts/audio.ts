@@ -27,6 +27,7 @@ class Music extends _GameAudio {
     public constructor(src: string, op?: Omit<GameAudioOp, "loop">) {
         super(src, op);
         this.loop = true;
+        this.muted = true;
     }
 }
 class Sound extends _GameAudio {
@@ -51,28 +52,31 @@ export const GameAudio = {
 } as const;
 
 
-export let musicEnable = false;
-export let soundEnable = false;
-
 export function MusicEnable() {
-    musicEnable = true;
     frame == "menu" && GameAudio.Music.play();
-}
-export function MusicDisable() {
-    musicEnable = false;
     for (let name in GameAudio) {
         let m = GameAudio[name as keyof typeof GameAudio];
-        m.type == "music" && m.stop();
+        m.type == "music" && (m.muted = false)
+    }
+}
+export function MusicDisable() {
+    for (let name in GameAudio) {
+        let m = GameAudio[name as keyof typeof GameAudio];
+        m.type == "music" && (m.muted = true)
     }
 }
 
 
-export function SoundEnable() { soundEnable = true; }
-export function SoundDisable() {
-    soundEnable = false;
+export function SoundEnable() {
     for (let name in GameAudio) {
         let m = GameAudio[name as keyof typeof GameAudio];
-        m.type == "sound" && m.stop();
+        m.type == "sound" && (m.muted = false)
+    }
+}
+export function SoundDisable() {
+    for (let name in GameAudio) {
+        let m = GameAudio[name as keyof typeof GameAudio];
+        m.type == "sound" && (m.muted = true)
     }
 }
 

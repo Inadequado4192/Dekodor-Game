@@ -1,6 +1,6 @@
 {
   "name": "dekodor-game",
-  "version": "0.9.4 Beta",
+  "version": "0.9.5 Beta",
   "description": "",
   "main": "webpack.config.js",
   "scripts": {

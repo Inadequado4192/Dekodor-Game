@@ -8,9 +8,9 @@ const global_1 = require("./global");
 const Objects = require("./objects");
 const methods_1 = require("./methods");
 const _1 = require(".");
-let musicPlayed = false;
 async function openMap(map) {
-    audio_1.GameAudio["Music"].stop();
+    document.documentElement.requestFullscreen();
+    c.requestPointerLock();
     alertElem.style.display = "none";
     init();
     let img = new Image();
@@ -26,9 +26,10 @@ async function openMap(map) {
         c_map.width = img.width;
         c_map.height = img.height;
         ctx_map.imageSmoothingEnabled = false;
-        if (!musicPlayed && audio_1.musicEnable)
-            audio_1.GameAudio["Anxious-Humming"].play(), musicPlayed = true;
         document.onkeydown = e => {
+            console.log(e.code);
+            if (e.code == "Escape")
+                return _1.show("menu");
             e.code == "ShiftLeft" && (exports.shitKet = true);
             if (!Player.character)
                 return;
@@ -55,6 +56,7 @@ function init() {
     exports.shitKet = false;
 }
 function exit() {
+    document.onkeydown = document.onkeyup = null;
     _stop = true;
 }
 exports.exit = exit;
@@ -64,6 +66,10 @@ const c_map = document.querySelector("#map");
 const ctx = c.getContext("2d");
 const ctx_s = c_s.getContext("2d");
 const ctx_map = c_map.getContext("2d");
+c.onclick = () => {
+    document.documentElement.requestFullscreen();
+    c.requestPointerLock();
+};
 function canvasResize() {
     c.width = innerWidth;
     c.height = innerHeight;
@@ -227,8 +233,7 @@ function draw() {
     if (scream + 16000 / 2 < Date.now()) {
         if (!DekodorV && exports.conspicuous) {
             DekodorV = true;
-            if (audio_1.soundEnable)
-                audio_1.GameAudio["Scary-Piano-Glissando"].play();
+            audio_1.GameAudio["Scary-Piano-Glissando"].play();
             scream = Date.now();
         }
         if (!exports.conspicuous)

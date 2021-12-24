@@ -34,15 +34,19 @@ menu_btn.addEventListener("click", () => {
 
 export let mode: "default" | "SCP-173" = "default";
 export let frame: "menu" | "game" = "menu";
-function show(elemId: "menu" | "game") {
+export function show(elemId: "menu" | "game") {
     frame = elemId;
     document.querySelectorAll<HTMLElement>("body > div").forEach(e => e.style.display = "none");
     (document.querySelector(`body > div#${elemId}`) as HTMLDivElement).style.display = "flex";
 
     if (elemId == "game") {
         openMap(map);
+        GameAudio.GameAudio["Music"].stop();
+        GameAudio.GameAudio["Anxious-Humming"].play();
     } else if (elemId == "menu") {
         exit();
+        GameAudio.GameAudio["Anxious-Humming"].stop();
+        GameAudio.GameAudio["Music"].play();
     }
 }
 
@@ -73,8 +77,6 @@ let map = 0;
 fetch("./package.json").then(d => d.json().then(p => {
     versionElem.innerHTML = p.version;
 }));
-
-
 
 musicElem.onclick = () => {
     if (musicElem.classList.contains("a")) {

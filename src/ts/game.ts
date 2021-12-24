@@ -1,14 +1,15 @@
-import { GameAudio, musicEnable, soundEnable } from "./audio";
+import { GameAudio } from "./audio";
 import * as Dekodor from "./Dekodor";
 import * as Player from "./Player";
 import { DirectionKeys } from "./global";
 import * as Objects from "./objects";
 import { getDirection, getObject, getRGBA, setRGBA } from "./methods";
-import { mode } from ".";
+import { mode, show } from ".";
 
-let musicPlayed = false;
+// let musicPlayed = false;
 export async function openMap(map: number) {
-    GameAudio["Music"].stop();
+    document.documentElement.requestFullscreen();
+    c.requestPointerLock();
     alertElem.style.display = "none";
     init();
 
@@ -29,10 +30,12 @@ export async function openMap(map: number) {
         ctx_map.imageSmoothingEnabled = false;
 
 
-        if (!musicPlayed && musicEnable) GameAudio["Anxious-Humming"].play(), musicPlayed = true;
+        // if (!musicPlayed) GameAudio["Anxious-Humming"].play(), musicPlayed = true;
 
 
         document.onkeydown = e => {
+            console.log(e.code)
+            if (e.code == "Escape") return show("menu");
             e.code == "ShiftLeft" && (shitKet = true);
             if (!Player.character) return;
 
@@ -60,6 +63,7 @@ function init() {
 }
 
 export function exit() {
+    document.onkeydown = document.onkeyup = null;
     _stop = true;
 }
 
@@ -74,6 +78,11 @@ const ctx = c.getContext("2d") as CanvasRenderingContext2D;
 const ctx_s = c_s.getContext("2d") as CanvasRenderingContext2D;
 const ctx_map = c_map.getContext("2d") as CanvasRenderingContext2D;
 
+
+c.onclick = () => {
+    document.documentElement.requestFullscreen();
+    c.requestPointerLock();
+}
 
 function canvasResize() {
     c.width = innerWidth;
@@ -271,7 +280,7 @@ function draw() {
     if (scream + 16000 / 2 < Date.now()) {
         if (!DekodorV && conspicuous) {
             DekodorV = true;
-            if (soundEnable) GameAudio["Scary-Piano-Glissando"].play();
+            GameAudio["Scary-Piano-Glissando"].play();
             scream = Date.now();
         }
         if (!conspicuous) DekodorV = false;

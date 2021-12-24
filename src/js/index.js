@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.frame = exports.mode = void 0;
+exports.show = exports.frame = exports.mode = void 0;
 const GameAudio = require("./audio");
 const game_1 = require("./game");
 const start_btn = document.querySelector("#start_btn");
@@ -34,11 +34,16 @@ function show(elemId) {
     document.querySelector(`body > div#${elemId}`).style.display = "flex";
     if (elemId == "game") {
         game_1.openMap(map);
+        GameAudio.GameAudio["Music"].stop();
+        GameAudio.GameAudio["Anxious-Humming"].play();
     }
     else if (elemId == "menu") {
         game_1.exit();
+        GameAudio.GameAudio["Anxious-Humming"].stop();
+        GameAudio.GameAudio["Music"].play();
     }
 }
+exports.show = show;
 for (let i = 0; i < 4; i++) {
     mapsElem.insertAdjacentHTML("beforeend", `<span${i == 0 ? ` class="active"` : ""}>${i + 1}<span>`);
 }
