@@ -25,13 +25,15 @@ class _GameAudio extends Audio {
 class Music extends _GameAudio {
     public type = "music";
     public constructor(src: string, op?: Omit<GameAudioOp, "loop">) {
-        super(src, op && Object.assign(op, { loop: true }));
+        super(src, op);
+        this.loop = true;
     }
 }
 class Sound extends _GameAudio {
     public type = "sound";
     public constructor(src: string, op?: Omit<GameAudioOp, "loop">) {
-        super(src, op && Object.assign(op, { loop: false }));
+        super(src, op);
+        this.loop = false;
     }
 }
 

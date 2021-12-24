@@ -20,14 +20,16 @@ class _GameAudio extends Audio {
 }
 class Music extends _GameAudio {
     constructor(src, op) {
-        super(src, op && Object.assign(op, { loop: true }));
+        super(src, op);
         this.type = "music";
+        this.loop = true;
     }
 }
 class Sound extends _GameAudio {
     constructor(src, op) {
-        super(src, op && Object.assign(op, { loop: false }));
+        super(src, op);
         this.type = "sound";
+        this.loop = false;
     }
 }
 const path = "./src/mp3";
