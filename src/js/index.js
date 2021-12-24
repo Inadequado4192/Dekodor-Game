@@ -5,6 +5,7 @@ const GameAudio = require("./audio");
 const game_1 = require("./game");
 const start_btn = document.querySelector("#start_btn");
 const SCP_173_btn = document.querySelector("#SCP-173_btn");
+const tutor_btn = document.querySelector("#tutor_btn");
 const restart_btn = document.querySelector("#restart_btn");
 const menu_btn = document.querySelector("#menu_btn");
 const mapsElem = document.querySelector("#maps");
@@ -20,6 +21,9 @@ SCP_173_btn.addEventListener("click", () => {
     exports.mode = "SCP-173";
     show("game");
 });
+tutor_btn.addEventListener("click", () => {
+    show("tutor");
+});
 restart_btn.addEventListener("click", () => {
     game_1.openMap(map);
 });
@@ -28,6 +32,7 @@ menu_btn.addEventListener("click", () => {
 });
 exports.mode = "default";
 exports.frame = "menu";
+let oldElem = "menu";
 function show(elemId) {
     exports.frame = elemId;
     document.querySelectorAll("body > div").forEach(e => e.style.display = "none");
@@ -38,10 +43,10 @@ function show(elemId) {
         GameAudio.GameAudio["Anxious-Humming"].play();
     }
     else if (elemId == "menu") {
-        game_1.exit();
         GameAudio.GameAudio["Anxious-Humming"].stop();
         GameAudio.GameAudio["Music"].play();
     }
+    oldElem = elemId;
 }
 exports.show = show;
 for (let i = 0; i < 4; i++) {
@@ -89,3 +94,7 @@ soundElem.onclick = () => {
     }
 };
 GameAudio.SoundEnable();
+document.addEventListener("keydown", e => {
+    if (e.code == "Escape")
+        return game_1.exit();
+});

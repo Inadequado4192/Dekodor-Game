@@ -9,8 +9,6 @@ const Objects = require("./objects");
 const methods_1 = require("./methods");
 const _1 = require(".");
 async function openMap(map) {
-    document.documentElement.requestFullscreen();
-    c.requestPointerLock();
     alertElem.style.display = "none";
     init();
     let img = new Image();
@@ -26,21 +24,18 @@ async function openMap(map) {
         c_map.width = img.width;
         c_map.height = img.height;
         ctx_map.imageSmoothingEnabled = false;
-        document.onkeydown = e => {
-            console.log(e.code);
-            if (e.code == "Escape")
-                return _1.show("menu");
+        document.addEventListener("keydown", e => {
             e.code == "ShiftLeft" && (exports.shitKet = true);
             if (!Player.character)
                 return;
             if (global_1.DirectionKeys.includes(e.code))
                 Player.move.add(methods_1.getDirection(e.code));
-        };
-        document.onkeyup = e => {
+        });
+        document.addEventListener("keyup", e => {
             e.code == "ShiftLeft" && (exports.shitKet = false);
             if (global_1.DirectionKeys.includes(e.code) && Player.move.has(methods_1.getDirection(e.code)))
                 Player.move.delete(methods_1.getDirection(e.code));
-        };
+        });
         loop();
     };
 }
@@ -58,6 +53,7 @@ function init() {
 function exit() {
     document.onkeydown = document.onkeyup = null;
     _stop = true;
+    _1.show("menu");
 }
 exports.exit = exit;
 const c = document.querySelector("#canvas");
@@ -66,10 +62,6 @@ const c_map = document.querySelector("#map");
 const ctx = c.getContext("2d");
 const ctx_s = c_s.getContext("2d");
 const ctx_map = c_map.getContext("2d");
-c.onclick = () => {
-    document.documentElement.requestFullscreen();
-    c.requestPointerLock();
-};
 function canvasResize() {
     c.width = innerWidth;
     c.height = innerHeight;

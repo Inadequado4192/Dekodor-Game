@@ -13,9 +13,14 @@
     <!-- DOMINISHING IDS! -->
     <!-- title="Coming soon..." disabled -->
     <div id="menu">
-        <a id="poster" href="https://www.twitch.tv/dekod0r" target="_blank"><img src="./poster.png" alt=""></a>
-        <button id="start_btn">Start</button>
+        <div id="authors">
+            <span>Developer: <b>Inadequado<i>#4192</i></b></span>
+            <span>Beta Tester and Assistant: <b>Tempest Bett<i>#7085</i></b></span>
+        </div>
+        <a id="poster" href="https://www.twitch.tv/dekod0r" target="_blank"><img src="./src/png/poster.png" alt=""></a>
+        <button id="start_btn">Начать</button>
         <button id="SCP-173_btn">SCP-173</button>
+        <button id="tutor_btn">Обучение</button>
         <div id="maps">
             <img id="mapPreview" src="" alt="Preview"></img>
             <h3>Maps</h3>
@@ -33,13 +38,18 @@
         <canvas id="mask"></canvas>
         <div id="inSetShadow"></div>
         <canvas id="map"></canvas>
-        <img src="./scream.png" id="scream" alt="">
+        <img src="./src/png/scream.png" id="scream" alt="">
+
+
+        <div id="alert" style="display: none;">
+            <h2>You win</h2>
+            <!-- You win/lose -->
+            <button id="restart_btn">Restart</button>
+            <button id="menu_btn">Menu</button>
+        </div>
     </div>
-    <div id="alert" style="display: none;">
-        <h2>You win</h2>
-        <!-- You win/lose -->
-        <button id="restart_btn">Restart</button>
-        <button id="menu_btn">Menu</button>
+    <div id="tutor">
+        <img src="./src/png/tutor.png" alt="">
     </div>
     <script src="./src/js/build.js"></script>
 </body>

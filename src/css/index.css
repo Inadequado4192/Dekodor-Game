@@ -2,6 +2,8 @@
     box-sizing: border-box;
     color     : #eee;
 
+    outline: none;
+
     font-family: monospace;
     font-size  : 30px;
 }
@@ -43,6 +45,28 @@ button:disabled {
 
     height: 100%;
 }
+
+#menu #authors {
+    position: absolute;
+    left    : 0;
+    top     : 0;
+
+    display: flex;
+    flex-direction: column;
+    opacity: .5;
+
+    margin: 10px;
+}
+
+#menu #authors * {
+    font-size: 12px;
+    font-style: italic;
+}
+#menu #authors i {
+    font-size: 8px;
+    opacity: .4;
+}
+
 #menu button {
     z-index: 2;
 }
@@ -53,8 +77,10 @@ button:disabled {
     top      : 50%;
     transform: translate(-50%, -50%) scale(.8, .8);
 
-    transition: 3s;
-    cursor    : help;
+
+    user-select: none;
+    transition : 3s;
+    cursor     : help;
 }
 
 #menu #poster:hover {
@@ -63,7 +89,7 @@ button:disabled {
 
 #menu #maps {
     margin-top: 50px;
-    z-index: 2;
+    z-index   : 2;
 }
 
 #menu #maps #mapPreview {
@@ -119,6 +145,8 @@ button:disabled {
 
     display       : flex;
     flex-direction: row;
+
+    user-select: none;
 }
 
 
@@ -146,6 +174,21 @@ button:disabled {
     opacity  : .5;
 }
 
+
+#tutor {
+    display        : flex;
+    flex-direction : column;
+    justify-content: center;
+
+    user-select   : none;
+    pointer-events: none;
+
+    height: 100%;
+}
+
+#tutor img {
+    width: 100%;
+}
 
 
 

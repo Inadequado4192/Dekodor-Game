@@ -6,10 +6,7 @@ import * as Objects from "./objects";
 import { getDirection, getObject, getRGBA, setRGBA } from "./methods";
 import { mode, show } from ".";
 
-// let musicPlayed = false;
 export async function openMap(map: number) {
-    document.documentElement.requestFullscreen();
-    c.requestPointerLock();
     alertElem.style.display = "none";
     init();
 
@@ -30,22 +27,16 @@ export async function openMap(map: number) {
         ctx_map.imageSmoothingEnabled = false;
 
 
-        // if (!musicPlayed) GameAudio["Anxious-Humming"].play(), musicPlayed = true;
-
-
-        document.onkeydown = e => {
-            console.log(e.code)
-            if (e.code == "Escape") return show("menu");
+        document.addEventListener("keydown", e => {
             e.code == "ShiftLeft" && (shitKet = true);
             if (!Player.character) return;
 
             if (DirectionKeys.includes(e.code as any)) Player.move.add(getDirection(e.code));
-
-        }
-        document.onkeyup = e => {
+        });
+        document.addEventListener("keyup", e => {
             e.code == "ShiftLeft" && (shitKet = false);
             if (DirectionKeys.includes(e.code as any) && Player.move.has(getDirection(e.code))) Player.move.delete(getDirection(e.code));
-        }
+        });
         loop();
     }
 }
@@ -65,11 +56,21 @@ function init() {
 export function exit() {
     document.onkeydown = document.onkeyup = null;
     _stop = true;
+    show("menu");
 }
 
 export let currentMapSize: [w: number, h: number];
 export let currentMap: Uint8ClampedArray;
 
+// function mapForEach(callback: (o: { x: number, y: number, RGBA: RGBA, object: Object2D }) => void) {
+//     for (let pos = 0; pos < currentMap.length; pos += 4) {
+//         const x = pos / 4 % currentMapSize[0], y = Math.floor(pos / 4 / currentMapSize[0]), c = Objects.SIZE / 2;
+//         const RGBA: RGBA = getRGBA(pos);
+
+//         let obj = getObject(RGBA);
+
+//     }
+// }
 
 const c = document.querySelector("#canvas") as HTMLCanvasElement;
 const c_s = document.querySelector("#mask") as HTMLCanvasElement;
@@ -77,12 +78,6 @@ const c_map = document.querySelector("#map") as HTMLCanvasElement;
 const ctx = c.getContext("2d") as CanvasRenderingContext2D;
 const ctx_s = c_s.getContext("2d") as CanvasRenderingContext2D;
 const ctx_map = c_map.getContext("2d") as CanvasRenderingContext2D;
-
-
-c.onclick = () => {
-    document.documentElement.requestFullscreen();
-    c.requestPointerLock();
-}
 
 function canvasResize() {
     c.width = innerWidth;

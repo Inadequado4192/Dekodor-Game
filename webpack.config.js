@@ -4,5 +4,5 @@ module.exports = {
         path: `${__dirname}/src/js`,
         filename: "build.js"
     },
-    mode: "development" // 'development' or 'production'
+    mode: "production" // 'development' or 'production'
 }
