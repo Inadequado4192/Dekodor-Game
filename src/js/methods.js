@@ -63,18 +63,18 @@ function moveObject(pos, direction) {
         case "Tank-L":
         case "Tank-D":
             if (_Dekodor) {
-                game_1.lose();
+                (0, game_1.lose)();
                 return pos;
             }
         case "Dekodor":
             if (_player) {
-                game_1.lose();
+                (0, game_1.lose)();
                 return pos;
             }
         case "Skull":
             if (_player) {
-                if (game_1.addSkullCountPick() == game_1.SkullCount)
-                    game_1.win();
+                if ((0, game_1.addSkullCountPick)() == game_1.SkullCount)
+                    (0, game_1.win)();
                 removeTarget = true;
             }
             if (_Dekodor && !DekodorOnSkull) {

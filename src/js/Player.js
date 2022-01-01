@@ -21,7 +21,7 @@ function playerMove() {
         let l = exports.move.last();
         if (!game_1.shitKet)
             exports.direction = l;
-        exports.character.pos = methods_1.moveObject(exports.character.pos, l);
+        exports.character.pos = (0, methods_1.moveObject)(exports.character.pos, l);
         updatePlayerLastMove();
     }
 }

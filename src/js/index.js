@@ -25,7 +25,7 @@ tutor_btn.addEventListener("click", () => {
     show("tutor");
 });
 restart_btn.addEventListener("click", () => {
-    game_1.openMap(map);
+    (0, game_1.openMap)(map);
 });
 menu_btn.addEventListener("click", () => {
     show("menu");
@@ -38,7 +38,7 @@ function show(elemId) {
     document.querySelectorAll("body > div").forEach(e => e.style.display = "none");
     document.querySelector(`body > div#${elemId}`).style.display = "flex";
     if (elemId == "game") {
-        game_1.openMap(map);
+        (0, game_1.openMap)(map);
         GameAudio.GameAudio["Music"].stop();
         GameAudio.GameAudio["Anxious-Humming"].play();
     }
@@ -96,5 +96,5 @@ soundElem.onclick = () => {
 GameAudio.SoundEnable();
 document.addEventListener("keydown", e => {
     if (e.code == "Escape")
-        return game_1.exit();
+        return (0, game_1.exit)();
 });

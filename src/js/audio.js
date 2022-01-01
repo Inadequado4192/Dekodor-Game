@@ -19,17 +19,17 @@ class _GameAudio extends Audio {
     }
 }
 class Music extends _GameAudio {
+    type = "music";
     constructor(src, op) {
         super(src, op);
-        this.type = "music";
         this.loop = true;
         this.muted = true;
     }
 }
 class Sound extends _GameAudio {
+    type = "sound";
     constructor(src, op) {
         super(src, op);
-        this.type = "sound";
         this.loop = false;
     }
 }

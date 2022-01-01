@@ -32,16 +32,16 @@ export function AI(): void {
     if (!character || !Player.character) return;
     let now = Date.now()
 
-    let speedDelay = {
-        run: 0,
-        conspicuous: 400
-    }
-    if (mode == "SCP-173") {
-        speedDelay = {
-            run: 100,
-            conspicuous: Infinity
-        }
-    }
+    // let speedDelay = {
+    //     run: 0,
+    //     conspicuous: 400
+    // }
+    // if (mode == "SCP-173") {
+    //     speedDelay = {
+    //         run: 20,
+    //         conspicuous: Infinity
+    //     }
+    // }
 
     if (conspicuous) {
         conspicuousLocal = conspicuous;
@@ -50,7 +50,7 @@ export function AI(): void {
         runReload = now;
     }
 
-    if (!character || lastMove + ((runReload + 1000 < now && !conspicuous) ? speedDelay.run : speedDelay.conspicuous) >= now) return;
+    if (!character || lastMove + ((runReload + 1000 < now && !conspicuous) ? 0 : 800) >= now) return;
 
     let { x, y } = character;
 

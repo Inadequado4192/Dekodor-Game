@@ -5,7 +5,6 @@ const game_1 = require("./game");
 const Player = require("./Player");
 const global_1 = require("./global");
 const methods_1 = require("./methods");
-const _1 = require(".");
 exports.character = null;
 exports.onSkull = true;
 function OnSkull(bool) { exports.onSkull = bool; }
@@ -30,16 +29,6 @@ function AI() {
     if (!exports.character || !Player.character)
         return;
     let now = Date.now();
-    let speedDelay = {
-        run: 0,
-        conspicuous: 400
-    };
-    if (_1.mode == "SCP-173") {
-        speedDelay = {
-            run: 100,
-            conspicuous: Infinity
-        };
-    }
     if (game_1.conspicuous) {
         conspicuousLocal = game_1.conspicuous;
     }
@@ -47,7 +36,7 @@ function AI() {
         conspicuousLocal = false;
         runReload = now;
     }
-    if (!exports.character || lastMove + ((runReload + 1000 < now && !game_1.conspicuous) ? speedDelay.run : speedDelay.conspicuous) >= now)
+    if (!exports.character || lastMove + ((runReload + 1000 < now && !game_1.conspicuous) ? 0 : 800) >= now)
         return;
     let { x, y } = exports.character;
     let targetMove;
@@ -67,16 +56,16 @@ function AI() {
         let targetObject = null;
         switch (targetMove) {
             case "D":
-                targetObject = methods_1.getObject(x, y + 1);
+                targetObject = (0, methods_1.getObject)(x, y + 1);
                 break;
             case "L":
-                targetObject = methods_1.getObject(x - 1, y);
+                targetObject = (0, methods_1.getObject)(x - 1, y);
                 break;
             case "R":
-                targetObject = methods_1.getObject(x + 1, y);
+                targetObject = (0, methods_1.getObject)(x + 1, y);
                 break;
             case "U":
-                targetObject = methods_1.getObject(x, y - 1);
+                targetObject = (0, methods_1.getObject)(x, y - 1);
                 break;
         }
         if (!targetMove)
@@ -85,15 +74,15 @@ function AI() {
             return AI();
     }
     else {
-        let rD = methods_1.getReverseDirection(exports.move);
+        let rD = (0, methods_1.getReverseDirection)(exports.move);
         let v = global_1.Direction.filter(d => {
             if (d == rD)
                 return false;
             switch (d) {
-                case "D": return methods_1.getObject(x, y + 1)?.name != "Wall";
-                case "L": return methods_1.getObject(x - 1, y)?.name != "Wall";
-                case "R": return methods_1.getObject(x + 1, y)?.name != "Wall";
-                case "U": return methods_1.getObject(x, y - 1)?.name != "Wall";
+                case "D": return (0, methods_1.getObject)(x, y + 1)?.name != "Wall";
+                case "L": return (0, methods_1.getObject)(x - 1, y)?.name != "Wall";
+                case "R": return (0, methods_1.getObject)(x + 1, y)?.name != "Wall";
+                case "U": return (0, methods_1.getObject)(x, y - 1)?.name != "Wall";
             }
         });
         targetMove = v[Math.floor(Math.random() * v.length)];
@@ -101,7 +90,7 @@ function AI() {
             targetMove = rD;
     }
     exports.move = targetMove;
-    exports.character.pos = methods_1.moveObject(exports.character.pos, exports.move);
+    exports.character.pos = (0, methods_1.moveObject)(exports.character.pos, exports.move);
     lastMove = now;
 }
 exports.AI = AI;

@@ -29,12 +29,12 @@ async function openMap(map) {
             if (!Player.character)
                 return;
             if (global_1.DirectionKeys.includes(e.code))
-                Player.move.add(methods_1.getDirection(e.code));
+                Player.move.add((0, methods_1.getDirection)(e.code));
         });
         document.addEventListener("keyup", e => {
             e.code == "ShiftLeft" && (exports.shitKet = false);
-            if (global_1.DirectionKeys.includes(e.code) && Player.move.has(methods_1.getDirection(e.code)))
-                Player.move.delete(methods_1.getDirection(e.code));
+            if (global_1.DirectionKeys.includes(e.code) && Player.move.has((0, methods_1.getDirection)(e.code)))
+                Player.move.delete((0, methods_1.getDirection)(e.code));
         });
         loop();
     };
@@ -53,7 +53,7 @@ function init() {
 function exit() {
     document.onkeydown = document.onkeyup = null;
     _stop = true;
-    _1.show("menu");
+    (0, _1.show)("menu");
 }
 exports.exit = exit;
 const c = document.querySelector("#canvas");
@@ -115,8 +115,8 @@ function draw() {
         }
         ctx.save();
         ctx.translate(x * Objects.SIZE + c - camera.x, y * Objects.SIZE + c - camera.y);
-        const RGBA = methods_1.getRGBA(pos);
-        let obj = methods_1.getObject(RGBA);
+        const RGBA = (0, methods_1.getRGBA)(pos);
+        let obj = (0, methods_1.getObject)(RGBA);
         needDraw && ctx.drawImage(SPRITE, 1 * Objects.SPRITE_SIZE, 0, Objects.SPRITE_SIZE, Objects.SPRITE_SIZE, -c, -c, Objects.SIZE, Objects.SIZE);
         if (obj === null) {
             ctx.restore();
@@ -148,17 +148,17 @@ function draw() {
                 if ((x + y) % 5 == 0)
                     exports.SkullCount++;
                 else
-                    methods_1.setRGBA(pos, [0, 0, 0, 1]);
+                    (0, methods_1.setRGBA)(pos, [0, 0, 0, 1]);
             }
             ctx.scale(.4, .4);
         }
         needDraw && ctx.drawImage(SPRITE, obj.spritePos * Objects.SPRITE_SIZE, 0, Objects.SPRITE_SIZE, Objects.SPRITE_SIZE, -c, -c, Objects.SIZE, Objects.SIZE);
         ctx.restore();
         if (obj.name == "Dekodor") {
-            methods_1.setRGBA(pos, Dekodor.onSkull ? [255, 255, 0, 255] : [0, 0, 0, 0], currentMapCopy);
+            (0, methods_1.setRGBA)(pos, Dekodor.onSkull ? [255, 255, 0, 255] : [0, 0, 0, 0], currentMapCopy);
         }
         else if (RGBA.join(",") === "0,0,0,0") {
-            methods_1.setRGBA(pos, [255, 255, 0, 255], currentMapCopy);
+            (0, methods_1.setRGBA)(pos, [255, 255, 0, 255], currentMapCopy);
         }
     }
     let imageData = new ImageData(currentMapCopy, exports.currentMapSize[0], exports.currentMapSize[1]);
@@ -177,7 +177,7 @@ function draw() {
         let p = Player.character;
         ctx_s.translate(p.x * Objects.SIZE + x * Objects.SIZE, p.y * Objects.SIZE + y * Objects.SIZE);
         ctx_s.fillRect(0, 0, Objects.SIZE, Objects.SIZE);
-        if (!exports.conspicuous && methods_1.getObject(p.x + x, p.y + y)?.name == "Dekodor")
+        if (!exports.conspicuous && (0, methods_1.getObject)(p.x + x, p.y + y)?.name == "Dekodor")
             exports.conspicuous = true;
         ctx_s.restore();
     };
@@ -185,7 +185,7 @@ function draw() {
         let { x, y } = Player.character;
         for (let _ = 1; _ <= radius; _++) {
             let _x = d.includes("H") ? _ * dd1 : 0, _y = d.includes("V") ? _ * (dd2 ?? dd1) : 0;
-            if (methods_1.getObject(x + _x, y + _y)?.name === "Wall") {
+            if ((0, methods_1.getObject)(x + _x, y + _y)?.name === "Wall") {
                 rect(_x, _y);
                 break;
             }
@@ -193,7 +193,7 @@ function draw() {
                 rect(_x, _y);
         }
     }
-    function isW(x, y) { return methods_1.getObject(Player.character.x + x, Player.character.y + y)?.name === "Wall"; }
+    function isW(x, y) { return (0, methods_1.getObject)(Player.character.x + x, Player.character.y + y)?.name === "Wall"; }
     if (_1.mode == "default") {
         drawRect(["V"], -1);
         drawRect(["V"], 1);
